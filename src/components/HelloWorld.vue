@@ -28,7 +28,7 @@
       <v-icon>add</v-icon>
     </v-btn>
     <v-slide-y-transition mode="out-in">
-      <kanban-board :stages="stages" :blocks="blocks">
+      <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
         <div v-for="block in blocks" :slot="block.id">
           <v-card class="ticket">
             <v-toolbar card dark prominent dense color="indigo">
@@ -131,6 +131,9 @@
         this.show_dialog = false
         itemsRef.push({status:'Pending',...this.input_form.data})
        // this.blocks.push({id:this.blocks.length,status:'Pending',...this.input_form.data})
+      },
+      updateBlock(id,status){
+        itemsRef.child(id).child('status').set(status)
       }
     }
   }
