@@ -3,7 +3,7 @@
     <v-toolbar dark color="indigo">
 
 
-      <v-toolbar-title class="white--text">Title</v-toolbar-title>
+      <v-toolbar-title class="white--text">Jobs Workflow</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
