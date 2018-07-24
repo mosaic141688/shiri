@@ -73,8 +73,8 @@
 export default {
   data () {
     return {
-      clipped: false,
-      drawer: false,
+      clipped: true,
+      drawer: true,
       fixed: false,
       items: [{
         icon: 'people',

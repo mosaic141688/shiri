@@ -1,9 +1,11 @@
 <template>
     <div>
       <newthing :form="client_form" fullscreen @save ="save_client">
+        Items
         <v-chip v-for="i in items" color="primary" text-color="white" close @input="remove_item(i)">
           {{i.name}}
         </v-chip>
+
         <newthing :form="item_form" @save ="save_item">
 
         </newthing>

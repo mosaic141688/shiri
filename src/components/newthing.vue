@@ -19,6 +19,9 @@
       >
         <v-card tile>
           <v-toolbar card dark prominent color="indigo">
+            <v-btn icon dark @click.native="show_dialog = false">
+              <v-icon>close</v-icon>
+            </v-btn>
             <v-toolbar-title>Enter an new job</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
