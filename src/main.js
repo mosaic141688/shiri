@@ -9,6 +9,11 @@ import HelloWorld from './components/HelloWorld'
 import nowhere from  './components/nowhere'
 import client from './components/client'
 
+import VueFire from 'vuefire';
+
+Vue.use(VueFire);
+
+
 Vue.use(VueRouter)
 const router =
   new VueRouter({
@@ -49,11 +54,12 @@ Vue.use(Vuetify, { theme: {
 
 
 Vue.config.productionTip = false
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-})
+}).$mount('#app')
+
+

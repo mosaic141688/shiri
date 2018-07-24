@@ -1,38 +1,13 @@
 <template>
   <div>
-    <v-toolbar dark color="indigo">
-
-
-      <v-toolbar-title class="white--text">Jobs Workflow</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>search</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>refresh</v-icon>
-      </v-btn>
-    </v-toolbar>
     <div style="height: 100%; position: relative">
-    <v-btn
-      absolute
-      dark
-      fab
-      top
-      left
-      color="pink"
-      @click="show_dialog=true"
-    >
-      <v-icon>add</v-icon>
-    </v-btn>
+
     <v-slide-y-transition mode="out-in">
       <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
         <div v-for="block in blocks" :slot="block.id">
           <v-card class="ticket">
             <v-toolbar card dark prominent dense color="indigo">
-              <v-toolbar-title>{{ block.title }}</v-toolbar-title>
+              <v-toolbar-title>{{ block.name }}</v-toolbar-title>
               <v-menu bottom right offset-y>
               </v-menu>
             </v-toolbar>
@@ -48,29 +23,7 @@
 
     </v-slide-y-transition>
     </div>
-    <div>
-      <v-dialog
-        v-model="show_dialog"
-        max-width="500px"
-      >
-        <v-card tile>
-          <v-toolbar card dark prominent color="indigo">
-            <v-toolbar-title>Enter an new job</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn dark flat @click.native="save_job">Save</v-btn>
-            </v-toolbar-items>
-            <v-menu bottom right offset-y>
-            </v-menu>
-          </v-toolbar>
-          <v-card-text>
-            <uform :fields="input_form.fields" :title="input_form.title" :value="input_form.data" v-model="input_form.data"></uform>
-          </v-card-text>
-        </v-card>
 
-      </v-dialog>
-
-    </div>
 
   </div>
 </template>
@@ -78,32 +31,21 @@
 <script>
   import Vue from 'vue'
   import vueKanban from 'vue-kanban'
-  import uform from './uform'
+
   import VueFire from 'vuefire';
   import firebase from 'firebase'
-
-  console.log(firebase)
-
-  const config = {
-    apiKey: "AIzaSyAaGx9BDbpuEq0foZHDNMvuRONUEdhID1E",
-    authDomain: "support-11bd7.firebaseapp.com",
-    databaseURL: "https://support-11bd7.firebaseio.com",
-    projectId: "support-11bd7",
-    storageBucket: "support-11bd7.appspot.com",
-    messagingSenderId: "1091418876767"
-  };
-  const app = firebase.initializeApp(config);
-  const db = app.database();
+  import newthing from './newthing'
+  import {db} from '../db'
+  console.log(db)
   let itemsRef = db.ref("items");
 
 
   Vue.use(VueFire);
   Vue.use(vueKanban)
   export default {
-    components:{uform},
+    components:{newthing},
     data(){
       return{
-        show_dialog:false,
         stages: ['Pending', 'in-progress', 'Finished'],
         input_form:{
           title: 'New Job details',
@@ -119,18 +61,26 @@
       }
     },
     firebase:{
-      items:itemsRef
+      items:itemsRef,
+      clients:db.ref('clients')
     },
     computed:{
       blocks(){
-        return this.items.map(i => {return {id:i['.key'],...i}})
+        return this.clients.reduce((acc,curr)=>{
+          return acc.concat(curr.items.map((i,j) => {return {
+            id:j,
+            ...i,
+            client_id:curr['.key'],
+            owner:curr.name
+          }}))
+        },[])
       }
     },
     methods:{
-      save_job(){
-        this.show_dialog = false
-        itemsRef.push({status:'Pending',...this.input_form.data})
-       // this.blocks.push({id:this.blocks.length,status:'Pending',...this.input_form.data})
+      save_job(job_data){
+
+       // itemsRef.push({status:'Pending',...job_data})
+
       },
       updateBlock(id,status){
         itemsRef.child(id).child('status').set(status)
