@@ -22,7 +22,7 @@
             <v-btn icon dark @click.native="show_dialog = false">
               <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title>Enter an new job</v-toolbar-title>
+            <v-toolbar-title>{{form.title}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn dark flat @click.native="save">Save</v-btn>
