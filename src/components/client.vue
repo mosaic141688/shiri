@@ -43,14 +43,13 @@
       return {
         items:[],
         client_form: {
-          title: 'New Job details',
+          title: 'New Client details',
           data: {},
           fields: [
             {label: 'Full Name', v_model: 'name', type: 'text', id: 0},
             {label: 'Cell', v_model: 'cell', type: 'text', id: 1},
             {label: 'Email', v_model: 'email', type: 'text', id: 2},
             {label: 'Date', v_model: 'date', type: 'date', id: 3},
-            {label: 'Price', v_model: 'price', type: 'number', id: 4},
             {label: 'Amount Paid', v_model: 'paid', type: 'number', id: 5},
           ]
         },
@@ -105,5 +104,3 @@
 <style scoped>
 
 </style>
-
-Mazwi Dlamini, contact 76898799, email. Mazwi@ iCloud.com.date 30/07/2018 ,Items (suits)qty 2. Sizes-trouser length 90cm, waist 40cm. Time give for job 7 days, time remaining before collection  7 days Total charge R2500, Amount paid R1000, balance R1500
