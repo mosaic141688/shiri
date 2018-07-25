@@ -19,7 +19,18 @@
       >
         <template slot="items" slot-scope="props">
 
-          <td v-for="h in headers" class="text-xs-left">{{ props.item[h.value] }}</td>
+          <td v-for="h in headers" class="text-xs-left">
+            <div v-if="h.value=='items'">
+              <v-chip v-for="job in props.item.items">
+                <v-avatar class="teal">{{job.quantity}}</v-avatar>
+                {{job.name}}
+              </v-chip>
+            </div>
+
+            <div v-else>
+              {{ props.item[h.value] }}
+            </div>
+          </td>
         </template>
       </v-data-table>
 
@@ -30,9 +41,9 @@
   import Vue from 'vue'
   import VueFire from 'vuefire';
   import {db} from '../db'
+  import newthing from './newthing'
 
   Vue.use(VueFire);
-  import newthing from './newthing'
 
   const clone = x => JSON.parse(JSON.stringify(x))
 
@@ -76,7 +87,8 @@
         }).concat(
           [
             {
-              text:'Items'
+              text:'Items',
+              value:'items'
             }
           ]
         )
