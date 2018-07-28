@@ -1,12 +1,12 @@
 <template>
     <div>
-      <newthing :form="client_form" fullscreen @save ="save_client">
+      <newthing :form="client_form" fullscreen @save ="save_client" ref="client_input" >
         Items
         <v-chip v-for="i in items" color="primary" text-color="white" close @input="remove_item(i)">
           {{i.name}}
         </v-chip>
 
-        <newthing :form="item_form" @save ="save_item">
+        <newthing :form="item_form" @save ="save_item" >
 
         </newthing>
       </newthing>
@@ -19,7 +19,7 @@
       >
         <template slot="items" slot-scope="props">
 
-          <td v-for="h in headers" class="text-xs-left">
+          <td v-for="h in headers" class="text-xs-left" @click="show(props.item)">
             <div v-if="h.value=='items'">
               <v-chip v-for="job in props.item.items">
                 <v-avatar class="teal">{{job.quantity}}</v-avatar>
@@ -92,9 +92,6 @@
             }
           ]
         )
-      },
-      list(){
-
       }
     },
     methods:{
@@ -105,7 +102,21 @@
         this.items.splice(this.items.indexOf(item),1)
       },
       save_client(){
+        if(this.client_form.data['.key']){
+          let form_data = this.client_form.data
+          let key = form_data['.key']
+          delete form_data['.key']
+          let data = {items:this.items,...form_data}
+          return db.ref('clients').child(key).set(data)
+            .catch(e=>alert('Saving failed. PLease check your internet connection and try editing again'))
+        }
         db.ref('clients').push({items:this.items,...this.client_form.data})
+          .catch(e=>alert('Saving failed. PLease check your internet connection and try editing again'))
+      },
+      show(client){
+        console.log(this)
+        this.items = client.items
+        this.$refs['client_input'].show_thing(client)
       }
     }
   }

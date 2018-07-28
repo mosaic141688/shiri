@@ -75,6 +75,10 @@
       },
       get_data(){
         return this.form.data
+      },
+      show_thing(thing){
+        this.show_dialog = true
+        this.form.data = thing
       }
     }
 
